@@ -1,5 +1,6 @@
 
 from Commons.Utiles import config
+from Doman.Init.flask_init import init_flask
 
 
 def create():
@@ -10,4 +11,5 @@ def create():
 
 
 if __name__ == "__main__":
+    init_flask()
     create().run()
