@@ -1,5 +1,5 @@
 
-from Commons.Utiles import config
+from Common.Utiles import config
 from Doman.Init.flask_init import init_flask
 from EntryPoints.Controllers.user_controller import app as user_controller
 from EntryPoints.Controllers.venue_controller import app as venue_controller

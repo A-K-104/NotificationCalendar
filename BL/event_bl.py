@@ -1,8 +1,8 @@
 from flask import jsonify
 
-from Commons.Exceptions.MissingValueException import MissingValueException
-from Commons.Exceptions.NotFoundException import NotFoundException
-from Models import event_model
+from Common.Exceptions.MissingValueException import MissingValueException
+from Common.Exceptions.NotFoundException import NotFoundException
+from Model import event_model
 
 
 def get_event_bl(event_id: int):

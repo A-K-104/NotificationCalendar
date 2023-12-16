@@ -1,12 +1,12 @@
 from flask import jsonify
 
-from Commons.Enums.UserRollEnum import UserRollEnum
-from Commons.Exceptions.MissingValueException import MissingValueException
-from Commons.Exceptions.NameAlreadyUsedException import NameAlreadyUsedException
-from Commons.Exceptions.NotAuthorizedException import NotAuthorizedException
-from Commons.Exceptions.NotFoundException import NotFoundException
-from Commons.Exceptions.NotInEnumException import NotInEnumException
-from Models import user_model
+from Common.Enums.UserRollEnum import UserRollEnum
+from Common.Exceptions.MissingValueException import MissingValueException
+from Common.Exceptions.NameAlreadyUsedException import NameAlreadyUsedException
+from Common.Exceptions.NotAuthorizedException import NotAuthorizedException
+from Common.Exceptions.NotFoundException import NotFoundException
+from Common.Exceptions.NotInEnumException import NotInEnumException
+from Model import user_model
 
 
 def get_user_bl(user_id: int):

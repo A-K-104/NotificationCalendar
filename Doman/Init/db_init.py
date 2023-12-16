@@ -1,5 +1,5 @@
-from Commons.DI import db_connection
-from Commons.Utiles.config import Base
+from Common.DI import db_connection
+from Common.Utiles.config import Base
 
 
 def create_db():

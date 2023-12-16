@@ -1,9 +1,9 @@
 from flask import jsonify
 
-from Commons.Exceptions.MissingValueException import MissingValueException
-from Commons.Exceptions.NameAlreadyUsedException import NameAlreadyUsedException
-from Commons.Exceptions.NotFoundException import NotFoundException
-from Models import venue_model
+from Common.Exceptions.MissingValueException import MissingValueException
+from Common.Exceptions.NameAlreadyUsedException import NameAlreadyUsedException
+from Common.Exceptions.NotFoundException import NotFoundException
+from Model import venue_model
 
 
 def get_venue_bl(venue_id: int):
