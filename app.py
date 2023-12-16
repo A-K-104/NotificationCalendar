@@ -11,6 +11,7 @@ from Commons.Entities import Venue
 def create():
     app = config.app
     app.register_blueprint(user_controller)
+    app.register_blueprint(venue_controller)
 
     return app
 
