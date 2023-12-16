@@ -20,8 +20,8 @@ class Event(Base):
     created_on = Column(DateTime(), default=datetime.now)
 
     @staticmethod
-    def create(session, **kwargs):
-        new_user = Event(**kwargs)
+    def create(session, user_id: int, **kwargs):
+        new_user = Event(organizer=user_id, **kwargs)
         session.add(new_user)
         session.commit()
         return new_user

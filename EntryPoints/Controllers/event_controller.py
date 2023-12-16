@@ -3,9 +3,9 @@ from flask import make_response, request, Blueprint
 from BL import event_bl
 from Commons.Exceptions.MissingValueException import MissingValueException
 from Commons.Exceptions.NotFoundException import NotFoundException
+from Commons.Utiles.user_logged_in import user_is_admin
 
 app = Blueprint('event_controller', __name__, url_prefix='/api/v1')
-
 
 
 @app.route('/event/<int:event_id>', methods=['GET'])
@@ -33,11 +33,12 @@ def get_all_events():
 
 
 @app.route('/event', methods=['POST'])
-def create_event():
+@user_is_admin
+def create_event(user: dict):
     if not request.is_json:
         return make_response("Invalid content type, expecting JSON", 415)
     try:
-        return make_response(event_bl.create_event_bl(request.json), 201)
+        return make_response(event_bl.create_event_bl(user, request.json), 201)
 
     except MissingValueException:
         return make_response("Missing required fields", 400)
@@ -47,7 +48,8 @@ def create_event():
 
 
 @app.route('/event/<int:event_id>', methods=['PUT'])
-def update_event(event_id: int):
+@user_is_admin
+def update_event(user: dict, event_id: int):
     if not request.is_json:
         return make_response("Invalid content type, expecting JSON", 415)
     try:
@@ -62,7 +64,8 @@ def update_event(event_id: int):
 
 
 @app.route('/event/<int:event_id>', methods=['DELETE'])
-def delete_event(event_id: int):
+@user_is_admin
+def delete_event(user: dict, event_id: int):
     try:
         return make_response(event_bl.delete_event_bl(event_id), 201)
 

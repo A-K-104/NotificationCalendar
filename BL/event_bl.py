@@ -19,12 +19,12 @@ def get_all_events_bl():
     raise NotFoundException()
 
 
-def create_event_bl(json: dict):
+def create_event_bl(user: dict, json: dict):
     if 'date' not in json or 'title' not in json:
         raise MissingValueException()
 
     try:
-        new_event = event_model.create_event(**json)
+        new_event = event_model.create_event(user['id'], **json)
         return jsonify(new_event)
     except Exception as e:
         raise Exception(e)

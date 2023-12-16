@@ -4,6 +4,7 @@ from BL import user_bl
 from Commons.Exceptions.MissingValueException import MissingValueException
 from Commons.Exceptions.NameAlreadyUsedException import NameAlreadyUsedException
 from Commons.Exceptions.NotFoundException import NotFoundException
+from Commons.Exceptions.NotInEnumException import NotInEnumException
 
 app = Blueprint('user_controller', __name__, url_prefix='/api/v1')
 
@@ -30,6 +31,9 @@ def create_user():
     except MissingValueException:
         return make_response("Missing required fields", 400)
 
+    except NotInEnumException:
+        return make_response("The selected role is allowed", 400)
+
     except NameAlreadyUsedException:
         return make_response("Error creating user: username already in use", 400)
 
@@ -46,6 +50,9 @@ def update_user(user_id: int):
 
     except NotFoundException:
         return make_response("User not found", 404)
+
+    except NotInEnumException:
+        return make_response("The selected role is allowed", 400)
 
     except NameAlreadyUsedException:
         return make_response(f"Error updating user: username already in use", 400)

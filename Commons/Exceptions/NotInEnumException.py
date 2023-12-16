@@ -1,0 +1,2 @@
+class NotInEnumException(Exception):
+    pass

@@ -12,6 +12,14 @@ def get_user_by_id(session, user_id: int) -> Union[dict, None]:
 
 
 @with_db_session
+def get_user_by_name(session, username: str) -> Union[dict, None]:
+    user = session.query(User).filter_by(username=username).first()
+    if user is not None:
+        return user.to_dict()
+    return None
+
+
+@with_db_session
 def create_user(session, username: str, role: str) -> dict:
     user = User.create(session, username, role)
     return user.to_dict()

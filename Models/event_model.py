@@ -20,8 +20,8 @@ def get_all_events(session) -> Union[list, None]:
 
 
 @with_db_session
-def create_event(session, **kwargs) -> dict:
-    event = Event.create(session, **kwargs)
+def create_event(session, user_id: int, **kwargs) -> dict:
+    event = Event.create(session, user_id, **kwargs)
     return event.to_dict()
 
 
