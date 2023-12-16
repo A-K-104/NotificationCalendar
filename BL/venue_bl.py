@@ -1,7 +1,6 @@
-from flask import jsonify
-
-from Common.Exceptions.NameAlreadyUsedException import NameAlreadyUsedException
 from Common.Exceptions.NotFoundException import NotFoundException
+from Common.decorators.format_response_decorator import format_response_decorator
+from Common.decorators.validate_request_json_decorator import validate_request_json_decorator
 from Model.venue_model import VenueModel
 
 
@@ -10,35 +9,22 @@ class VenueBL:
     def __init__(self):
         self.venueModel = VenueModel()
 
-    def get_venue_bl(self, venue_id: int):
-        venue = self.venueModel.get_one(venue_id)
-        if venue:
-            return jsonify(venue)
-        raise NotFoundException()
+    @format_response_decorator
+    def get_one(self, venue_id: int):
+        return self.venueModel.get_one(venue_id)
 
-    def create_venue_bl(self, json: dict):
+    @format_response_decorator
+    @validate_request_json_decorator
+    def create_one(self, json):
         if 'room_name' not in json:
             raise NotFoundException()
 
-        try:
-            new_venue = self.venueModel.create_one(**json)
-            return jsonify(new_venue)
-        except Exception as e:
-            if 'duplicate key value' in str(e):
-                raise NameAlreadyUsedException()
-            raise Exception(e)
+        return self.venueModel.create_one(**json)
 
-    def update_venue_bl(self, venue_id: int, json: dict):
-        try:
-            venue = self.venueModel.update_one(venue_id, **json)
-        except Exception as e:
-            if 'duplicate key value' in str(e):
-                raise NameAlreadyUsedException()
-            raise Exception(e)
+    @format_response_decorator
+    @validate_request_json_decorator
+    def update_one(self, json, venue_id: int):
+        return self.venueModel.update_one(venue_id, **json)
 
-        if venue is not None:
-            return jsonify(venue)
-        raise NotFoundException()
-
-    def delete_venue_bl(self, venue_id: int):
+    def delete_one(self, venue_id: int):
         self.venueModel.delete_one(venue_id)

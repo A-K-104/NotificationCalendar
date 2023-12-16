@@ -1,5 +1,7 @@
+from Common.DTOs.UserDTO import UserDTO
 from Common.Exceptions.NotFoundException import NotFoundException
-from Common.Utiles.format_response_decorator import format_response_decorator
+from Common.decorators.format_response_decorator import format_response_decorator
+from Common.decorators.validate_request_json_decorator import validate_request_json_decorator
 from Model.event_model import EventModel
 
 
@@ -11,40 +13,24 @@ class EventBL:
 
     @format_response_decorator
     def get_one(self, event_id: int):
-        event = self.eventModel.get_one(event_id)
-        if event:
-            return event
-        raise NotFoundException()
+        return self.eventModel.get_one(event_id)
 
     @format_response_decorator
     def get_all(self):
-        events = self.eventModel.get_all()
-        if events:
-            return events
-        raise NotFoundException()
+        return self.eventModel.get_all()
 
     @format_response_decorator
-    def create_event_bl(self, user: dict, json: dict):
+    @validate_request_json_decorator
+    def create_one(self, json, user: UserDTO):
         if 'date' not in json or 'title' not in json:
             raise NotFoundException()
-
-        try:
-            json['organizer'] = user['id']
-            new_event = self.eventModel.create_one(**json)
-            return new_event
-        except Exception as e:
-            raise Exception(e)
+        json['organizer'] = user.el_id
+        return self.eventModel.create_one(**json)
 
     @format_response_decorator
-    def update_one(self, event_id: int, json: dict):
-        try:
-            event = self.eventModel.update_one(event_id, **json)
-        except Exception as e:
-            raise Exception(e)
-
-        if event is not None:
-            return event
-        raise NotFoundException()
+    @validate_request_json_decorator
+    def update_one(self, json, event_id: int):
+        return self.eventModel.update_one(event_id, **json)
 
     def delete_event_bl(self, event_id: int):
         self.eventModel.delete_one(event_id)

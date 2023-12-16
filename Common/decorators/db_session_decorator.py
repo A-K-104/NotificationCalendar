@@ -1,9 +1,9 @@
 from functools import wraps
 
-from Common.DI import db_connection
+from EntryPoint.Config import db_connection
 
 
-def with_db_session(func):
+def with_db_session_decorator(func):
     @wraps(func)
     def wrapper(self, *args, **kwargs):
         session = db_connection.get_db_session()

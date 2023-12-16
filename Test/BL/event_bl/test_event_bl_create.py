@@ -1,10 +1,10 @@
-from unittest.mock import patch
 import unittest
+from unittest.mock import patch
 
+from Common.Exceptions.MissingValueException import MissingValueException
 from flask import Flask
 
 from BL import event_bl
-from Common.Exceptions.MissingValueException import MissingValueException
 
 
 class TestCreateEvent(unittest.TestCase):
@@ -17,8 +17,13 @@ class TestCreateEvent(unittest.TestCase):
     @patch('Models.event_model.create_event')
     def test_create_event_success(self, mock_create_event):
         with self.app.app_context():
+            # Assert
             mock_create_event.return_value = self.valid_json
+
+            # Act
             response = event_bl.create_event_bl(self.user, self.valid_json)
+
+            # Assert
             self.assertEqual(response.json, self.valid_json)
 
     def test_create_event_missing_values(self):

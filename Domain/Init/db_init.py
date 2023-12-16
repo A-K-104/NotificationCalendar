@@ -1,5 +1,5 @@
-from Common.DI import db_connection
 from Common.Utiles.config import Base
+from EntryPoint.Config import db_connection
 
 
 def create_db():
