@@ -2,6 +2,7 @@ from sqlalchemy import create_engine, Engine, URL
 from sqlalchemy.orm import sessionmaker, Session
 
 from Common.Utiles import secrets
+from EntryPoint.Config import config
 
 
 def get_engine() -> Engine:
@@ -9,9 +10,9 @@ def get_engine() -> Engine:
         drivername="postgresql",
         username=secrets.db_username,
         password=secrets.db_password,
-        host=secrets.db_host,
-        port=secrets.db_port,
-        database=secrets.db_table
+        host=config.db_host,
+        port=config.db_port,
+        database=config.db_table
     )
     return create_engine(url)
 
