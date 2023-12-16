@@ -1,76 +1,69 @@
 from flask import make_response, request, Blueprint
 
 from BL import event_bl
-from Common.Exceptions.MissingValueException import MissingValueException
+from BL.event_bl import EventBL
 from Common.Exceptions.NotFoundException import NotFoundException
+from Common.Utiles.server_error_decorator import server_error_decorator
 from Common.Utiles.user_logged_in import user_is_admin
 
-app = Blueprint('event_controller', __name__, url_prefix='/api/v1')
+api_version = 1
+app = Blueprint('event_controller', __name__, url_prefix=f'/api/v{api_version}/event')  # todo validate use of __name__
+
+event_bl_g = EventBL()
 
 
-@app.route('/event/<int:event_id>', methods=['GET'])
+@app.route('/<int:event_id>', methods=['GET'])
+@server_error_decorator
 def get_event(event_id: int):
     try:
-        return make_response(event_bl.get_event_bl(event_id), 200)
+        return event_bl_g.get_one(event_id)
 
-    except NotFoundException:
-        return make_response("Event not found", 404)
-
-    except Exception as e:
-        return make_response(f"General error: {e}", 500)
+    except NotFoundException as e:
+        return make_response(e.message, e.error_code)
 
 
-@app.route('/event/all', methods=['GET'])
+@app.route('/all', methods=['GET'])
+@server_error_decorator
 def get_all_events():
     try:
-        return make_response(event_bl.get_all_events_bl(), 200)
+        return event_bl_g.get_all()
 
-    except NotFoundException:
-        return make_response("Events not found", 404)
-
-    except Exception as e:
-        return make_response(f"General error: {e}", 500)
+    except NotFoundException as e:
+        return make_response(e.message, e.error_code)
 
 
-@app.route('/event', methods=['POST'])
+@app.route('/', methods=['POST'])
 @user_is_admin
+@server_error_decorator
 def create_event(user: dict):
     if not request.is_json:
         return make_response("Invalid content type, expecting JSON", 415)
     try:
-        return make_response(event_bl.create_event_bl(user, request.json), 201)
+        return event_bl_g.create_event_bl(user, request.json)
 
-    except MissingValueException:
-        return make_response("Missing required fields", 400)
-
-    except Exception as e:
-        return make_response(f"General error: {e}", 500)
+    except NotFoundException as e:
+        return make_response(e.message, e.error_code)
 
 
-@app.route('/event/<int:event_id>', methods=['PUT'])
+@app.route('/<int:event_id>', methods=['PUT'])
 @user_is_admin
-def update_event(user: dict, event_id: int):
+@server_error_decorator
+def update_event(_: dict, event_id: int):
     if not request.is_json:
         return make_response("Invalid content type, expecting JSON", 415)
     try:
-        return make_response(event_bl.update_event_bl(event_id, request.json), 201)
+        return event_bl_g.update_one(event_id, request.json)
 
-    except NotFoundException:
-        return make_response("Event not found", 404)
-
-
-    except Exception as e:
-        return make_response(f"General error: {e}", 500)
+    except NotFoundException as e:
+        return make_response(e.message, e.error_code)
 
 
-@app.route('/event/<int:event_id>', methods=['DELETE'])
+@app.route('/<int:event_id>', methods=['DELETE'])
 @user_is_admin
-def delete_event(user: dict, event_id: int):
+@server_error_decorator
+def delete_event(_: dict, event_id: int):
     try:
-        return make_response(event_bl.delete_event_bl(event_id), 201)
-
-    except NotFoundException:
-        return make_response("Event not found", 404)
-
-    except Exception as e:
-        return make_response(f"General error: {e}", 500)
+        event_bl_g.delete_event_bl(event_id)
+        return make_response("Success", 200)  # todo: carper
+    except NotFoundException as e:
+        return make_response(e.message, e.error_code)

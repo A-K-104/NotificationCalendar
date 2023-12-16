@@ -2,10 +2,10 @@ from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 
-from Common.Utiles.config import Base
+from Common.Utiles.config import Base as sqlAlchemyEntityBase
 
 
-class Event(Base):
+class Event(sqlAlchemyEntityBase):
     __tablename__ = 'event'
     id = Column(Integer, primary_key=True)
     title = Column(String(255), nullable=False)
@@ -19,18 +19,7 @@ class Event(Base):
     description = Column(String(255))
     created_on = Column(DateTime(), default=datetime.now)
 
-    @staticmethod
-    def create(session, user_id: int, **kwargs):
-        new_user = Event(organizer=user_id, **kwargs)
-        session.add(new_user)
-        session.commit()
-        return new_user
-
-    def update(self, session, **kwargs):
-        for key, value in kwargs.items():
-            if hasattr(self, key):
-                setattr(self, key, value)
-        session.commit()
+    # todo: organizer=user_id,
 
     def to_dict(self):
         return {

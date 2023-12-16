@@ -17,20 +17,20 @@ class TestGetEvent(unittest.TestCase):
     def test_get_event_success(self, mock_get_event):
         with self.app.app_context():
             mock_get_event.return_value = self.valid_json
-            response = event_bl.get_event_bl(1)
+            response = event_bl.get_one(1)
             self.assertEqual(response.json, self.valid_json)
 
     @patch('Models.event_model.get_event_by_id')
     def test_get_event_wrong_id(self, mock_get_event):
         mock_get_event.return_value = None
         with self.assertRaises(NotFoundException):
-            event_bl.get_event_bl(1)
+            event_bl.get_one(1)
 
     @patch('Models.event_model.get_all_events')
     def test_get_all_event_success(self, mock_get_event):
         with self.app.app_context():
             mock_get_event.return_value = [self.valid_json]
-            response = event_bl.get_all_events_bl()
+            response = event_bl.get_all()
             self.assertEqual(response.json, [self.valid_json])
 
 

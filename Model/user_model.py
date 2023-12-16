@@ -1,44 +1,19 @@
 from typing import Union
 from Common.Entities.User import User
+from Common.Exceptions.NotFoundException import NotFoundException
 from Common.Utiles.db_session_wrapper import with_db_session
 
-
-@with_db_session
-def get_user_by_id(session, user_id: int) -> Union[dict, None]:
-    user = session.query(User).get(user_id)
-    if user is not None:
-        return user.to_dict()
-    return None
+from Common.Entities.Event import Event
+from Model.ModelBase import ModelBase
 
 
-@with_db_session
-def get_user_by_name(session, username: str) -> Union[dict, None]:
-    user = session.query(User).filter_by(username=username).first()
-    if user is not None:
-        return user.to_dict()
-    return None
+class UserModel(ModelBase):
+    def __init__(self):
+        super().__init__(User)
 
-
-@with_db_session
-def create_user(session, username: str, role: str) -> dict:
-    user = User.create(session, username, role)
-    return user.to_dict()
-
-
-@with_db_session
-def update_user_by_id(session, user_id: int, **kwargs) -> Union[dict, None]:
-    user = session.query(User).get(user_id)
-    if user:
-        user.update(session, **kwargs)
-        return user.to_dict()
-    return None
-
-
-@with_db_session
-def delete_user_by_id(session, user_id: int) -> bool:
-    user = session.query(User).get(user_id)
-    if user:
-        session.delete(user)
-        session.commit()
-        return True
-    return False
+    @with_db_session
+    def get_user_by_name(self, session, username: str) -> Union[dict, None]:
+        user = session.query(User).filter_by(username=username).first()
+        if user is not None:
+            return user.to_dict()
+        raise NotFoundException

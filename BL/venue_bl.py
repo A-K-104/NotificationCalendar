@@ -1,6 +1,5 @@
 from flask import jsonify
 
-from Common.Exceptions.MissingValueException import MissingValueException
 from Common.Exceptions.NameAlreadyUsedException import NameAlreadyUsedException
 from Common.Exceptions.NotFoundException import NotFoundException
 from Model import venue_model
@@ -15,7 +14,7 @@ def get_venue_bl(venue_id: int):
 
 def create_venue_bl(json: dict):
     if 'room_name' not in json:
-        raise MissingValueException()
+        raise NotFoundException()
 
     try:
         new_venue = venue_model.create_venue(**json)

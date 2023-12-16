@@ -1,2 +1,3 @@
 class NotFoundException(Exception):
-    pass
+    message: str = "Not found"
+    error_code: int = 404

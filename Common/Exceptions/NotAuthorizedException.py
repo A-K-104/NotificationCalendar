@@ -1,2 +1,3 @@
 class NotAuthorizedException(Exception):
-    pass
+    message: str = "Not authorized"
+    error_code: int = 401

@@ -1,12 +1,12 @@
 from flask import jsonify
 
 from Common.Enums.UserRollEnum import UserRollEnum
-from Common.Exceptions.MissingValueException import MissingValueException
 from Common.Exceptions.NameAlreadyUsedException import NameAlreadyUsedException
 from Common.Exceptions.NotAuthorizedException import NotAuthorizedException
 from Common.Exceptions.NotFoundException import NotFoundException
 from Common.Exceptions.NotInEnumException import NotInEnumException
 from Model import user_model
+from Model.user_model import UserModel
 
 
 def get_user_bl(user_id: int):
@@ -17,7 +17,8 @@ def get_user_bl(user_id: int):
 
 
 def get_user_authorized_by_name_bl(username: str) -> dict:
-    user = user_model.get_user_by_name(username)
+    userModel = UserModel()
+    user = userModel.get_user_by_name(username)
     if user:
         return user
     raise NotAuthorizedException()
@@ -25,7 +26,7 @@ def get_user_authorized_by_name_bl(username: str) -> dict:
 
 def create_user_bl(json: dict):
     if 'username' not in json or 'role' not in json:
-        raise MissingValueException()
+        raise NotFoundException()
 
     if not UserRollEnum.__contains__(json.get('role')):
         raise NotInEnumException()
