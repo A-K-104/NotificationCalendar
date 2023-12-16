@@ -19,19 +19,6 @@ class Event(sqlAlchemyEntityBase):
     description = Column(String(255))
     created_on = Column(DateTime(), default=datetime.now)
 
-    # todo: organizer=user_id,
-
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'title': self.title,
-            'date': self.date,
-            'organizer': self.organizer,
-            'guests': self.guests,
-            'location': self.location,
-            'venue': self.venue,
-            'link': self.link,
-            'notifications': self.notifications,
-            'description': self.description,
-            'created_on': self.created_on.isoformat() if self.created_on else None
-        }
+    def to_dto(self):
+        from Common.Extensions.dto_extensions import event_to_dto
+        return event_to_dto(self)

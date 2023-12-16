@@ -5,58 +5,55 @@ from Common.Exceptions.NameAlreadyUsedException import NameAlreadyUsedException
 from Common.Exceptions.NotAuthorizedException import NotAuthorizedException
 from Common.Exceptions.NotFoundException import NotFoundException
 from Common.Exceptions.NotInEnumException import NotInEnumException
-from Model import user_model
 from Model.user_model import UserModel
 
 
-def get_user_bl(user_id: int):
-    user = user_model.get_user_by_id(user_id)
-    if user:
-        return jsonify(user)
-    raise NotFoundException()
+class UserBL:
 
+    def __init__(self):
+        self.userModel = UserModel()
 
-def get_user_authorized_by_name_bl(username: str) -> dict:
-    userModel = UserModel()
-    user = userModel.get_user_by_name(username)
-    if user:
-        return user
-    raise NotAuthorizedException()
-
-
-def create_user_bl(json: dict):
-    if 'username' not in json or 'role' not in json:
+    def get_all(self, user_id: int):
+        user = self.userModel.get_one(user_id)
+        if user:
+            return jsonify(user)
         raise NotFoundException()
 
-    if not UserRollEnum.__contains__(json.get('role')):
-        raise NotInEnumException()
-    try:
-        new_user = user_model.create_user(**json)
-        return jsonify(new_user)
-    except Exception as e:
-        if 'duplicate key value' in str(e):
-            raise NameAlreadyUsedException()
-        raise Exception(e)
+    def get_user_by_name(self, username: str) -> dict:
+        user = self.userModel.get_user_by_name(username)
+        if user:
+            return user
+        raise NotAuthorizedException()
 
+    def create_one(self, json: dict):
+        if 'username' not in json or 'role' not in json:
+            raise NotFoundException()
 
-def update_user_bl(user_id: int, json: dict):
+        if not UserRollEnum.__contains__(json.get('role')):
+            raise NotInEnumException()
+        try:
+            new_user = self.userModel.create_one(**json)
+            return jsonify(new_user)
+        except Exception as e:
+            if 'duplicate key value' in str(e):
+                raise NameAlreadyUsedException()
+            raise Exception(e)
 
-    if json.__contains__('role') and not UserRollEnum.__contains__(json.get('role')):
-        raise NotInEnumException()
+    def update_one(self, user_id: int, json: dict):
 
-    try:
-        user = user_model.update_user_by_id(user_id, **json)
-    except Exception as e:
-        if 'duplicate key value' in str(e):
-            raise NameAlreadyUsedException()
-        raise Exception(e)
+        if json.__contains__('role') and not UserRollEnum.__contains__(json.get('role')):
+            raise NotInEnumException()
 
-    if user is not None:
-        return jsonify(user)
-    raise NotFoundException()
+        try:
+            user = self.userModel.update_one(user_id, **json)
+        except Exception as e:
+            if 'duplicate key value' in str(e):
+                raise NameAlreadyUsedException()
+            raise Exception(e)
 
+        if user is not None:
+            return jsonify(user)
+        raise NotFoundException()
 
-def delete_user_bl(user_id: int):
-    if user_model.delete_user_by_id(user_id):
-        return "User deleted"
-    raise NotFoundException()
+    def delete_one(self, user_id: int):
+        self.userModel.delete_one(user_id)

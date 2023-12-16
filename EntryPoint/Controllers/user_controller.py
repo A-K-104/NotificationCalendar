@@ -6,10 +6,11 @@ from Common.Exceptions.NotFoundException import NotFoundException
 from Common.Exceptions.NotInEnumException import NotInEnumException
 from Common.Utiles.server_error_decorator import server_error_decorator
 
-app = Blueprint('user_controller', __name__, url_prefix='/api/v1')
+api_version = 1
+app = Blueprint('user_controller', __name__, url_prefix=f'/api/v{api_version}/user')
 
 
-@app.route('/user/<int:user_id>', methods=['GET'])
+@app.route('/<int:user_id>', methods=['GET'])
 @server_error_decorator
 def get_user(user_id: int):
     try:
@@ -20,8 +21,7 @@ def get_user(user_id: int):
         return make_response(e.message, e.error_code)
 
 
-
-@app.route('/user', methods=['POST'])
+@app.route('/', methods=['POST'])
 @server_error_decorator
 def create_user():
     if not request.is_json:
@@ -33,7 +33,7 @@ def create_user():
         return make_response(e.message, e.error_code)
 
 
-@app.route('/user/<int:user_id>', methods=['PUT'])
+@app.route('/<int:user_id>', methods=['PUT'])
 @server_error_decorator
 def update_user(user_id: int):
     if not request.is_json:
@@ -45,8 +45,7 @@ def update_user(user_id: int):
         return make_response(e.message, e.error_code)
 
 
-
-@app.route('/user/<int:user_id>', methods=['DELETE'])
+@app.route('/<int:user_id>', methods=['DELETE'])
 @server_error_decorator
 def delete_user(user_id: int):
     try:
@@ -54,4 +53,3 @@ def delete_user(user_id: int):
 
     except NotFoundException as e:
         return make_response(e.message, e.error_code)
-

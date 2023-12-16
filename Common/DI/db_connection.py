@@ -1,8 +1,7 @@
 from sqlalchemy import create_engine, Engine, URL
 from sqlalchemy.orm import sessionmaker, Session
 
-from Common.Utiles import secrets
-from EntryPoint.Config import config
+from EntryPoint.Config import config, secrets
 
 
 def get_engine() -> Engine:

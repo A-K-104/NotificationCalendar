@@ -5,10 +5,12 @@ from Common.Exceptions.NameAlreadyUsedException import NameAlreadyUsedException
 from Common.Exceptions.NotFoundException import NotFoundException
 from Common.Utiles.server_error_decorator import server_error_decorator
 
-app = Blueprint('venue_controller', __name__, url_prefix='/api/v1')
+api_version = 1
+
+app = Blueprint('venue_controller', __name__, url_prefix=f'/api/v{api_version}/venue')
 
 
-@app.route('/venue/<int:venue_id>', methods=['GET'])
+@app.route('/<int:venue_id>', methods=['GET'])
 @server_error_decorator
 def get_venue(venue_id: int):
     try:
@@ -18,7 +20,7 @@ def get_venue(venue_id: int):
         return make_response(e.message, e.error_code)
 
 
-@app.route('/venue', methods=['POST'])
+@app.route('/', methods=['POST'])
 @server_error_decorator
 def create_venue():
     if not request.is_json:
@@ -30,7 +32,7 @@ def create_venue():
         return make_response(e.message, e.error_code)
 
 
-@app.route('/venue/<int:venue_id>', methods=['PUT'])
+@app.route('/<int:venue_id>', methods=['PUT'])
 @server_error_decorator
 def update_venue(venue_id: int):
     if not request.is_json:
@@ -42,7 +44,7 @@ def update_venue(venue_id: int):
         return make_response(e.message, e.error_code)
 
 
-@app.route('/venue/<int:venue_id>', methods=['DELETE'])
+@app.route('/<int:venue_id>', methods=['DELETE'])
 @server_error_decorator
 def delete_venue(venue_id: int):
     try:
