@@ -1,49 +1,66 @@
-from flask import make_response, jsonify, request, Blueprint
+from flask import make_response, request, Blueprint
 
-from Models import user_model
+from BL import user_bl
+from Commons.Exceptions.MissingValueException import MissingValueException
+from Commons.Exceptions.NameAlreadyUsedException import NameAlreadyUsedException
+from Commons.Exceptions.NotFoundException import NotFoundException
 
 app = Blueprint('user_controller', __name__, url_prefix='/api/v1')
 
 
 @app.route('/user/<int:user_id>', methods=['GET'])
-def get_user(user_id):
-    user = user_model.get_user_by_id(user_id)
-    if user:
-        return jsonify(user)
-    else:
+def get_user(user_id: int):
+    try:
+        return make_response(user_bl.get_user_bl(user_id), 200)
+
+    except NotFoundException:
         return make_response("User not found", 404)
+
+    except Exception as e:
+        return make_response(f"General error: {e}", 500)
 
 
 @app.route('/user', methods=['POST'])
 def create_user():
     if not request.is_json:
         return make_response("Invalid content type, expecting JSON", 415)
+    try:
+        return make_response(user_bl.create_user_bl(request.json), 201)
 
-    data = request.json
-    if 'username' not in data or 'role' not in data:
+    except MissingValueException:
         return make_response("Missing required fields", 400)
 
-    try:
-        new_user = user_model.create_user(**data)
-        return jsonify(new_user), 201
+    except NameAlreadyUsedException:
+        return make_response("Error creating user: username already in use", 400)
+
     except Exception as e:
-        return make_response(f"Error creating user: {e}", 500)
+        return make_response(f"General error: {e}", 500)
 
 
 @app.route('/user/<int:user_id>', methods=['PUT'])
-def update_user(user_id):
-    data = request.json
-    user = user_model.update_user_by_id(user_id, **data)
-    if user:
-        return jsonify(user)
-    else:
+def update_user(user_id: int):
+    if not request.is_json:
+        return make_response("Invalid content type, expecting JSON", 415)
+    try:
+        return make_response(user_bl.update_user_bl(user_id, request.json), 201)
+
+    except NotFoundException:
         return make_response("User not found", 404)
+
+    except NameAlreadyUsedException:
+        return make_response(f"Error updating user: username already in use", 400)
+
+    except Exception as e:
+        return make_response(f"General error: {e}", 500)
 
 
 @app.route('/user/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    if user_model.delete_user_by_id(user_id):
+def delete_user(user_id: int):
+    try:
+        return make_response(user_bl.delete_user_bl(user_id), 201)
 
-        return make_response("User deleted", 200)
-    else:
+    except NotFoundException:
         return make_response("User not found", 404)
+
+    except Exception as e:
+        return make_response(f"General error: {e}", 500)
