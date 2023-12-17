@@ -36,14 +36,13 @@ class SchedulerBL:
         return self.scheduler_mapping_model.create_one(cron_date=run_date, event=event_id,
                                                        cron_id=job_id)
 
-    def delete_one(self, event):
+    def delete_many(self, event_id: str):
 
-        scheduler_mapping: list = self.scheduler_mapping_model.get_by_event_id(event.element_id)
+        scheduler_mapping: list = self.scheduler_mapping_model.get_by_event_id(event_id)
 
         for mapping in scheduler_mapping:
-            job = self.scheduler.get_job(mapping.cron_id)
-            if job.run_date == mapping.date:
-                self.scheduler.remove_job(mapping.cron_id)
+            self.scheduler.remove_job(mapping.cron_id)
+            self.scheduler_mapping_model.delete_one(mapping.element_id)
 
     def execute(self, scheduler_mapping_id: int):
         scheduler_mapp = self.scheduler_mapping_model.get_one(scheduler_mapping_id)

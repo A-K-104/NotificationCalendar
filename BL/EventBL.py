@@ -17,6 +17,10 @@ def event_contains_notification(event_json) -> bool:
     return 'notifications' not in event_json
 
 
+def event_update_date_or_notifications(event_json) -> bool:
+    return 'notifications' in event_json or 'date' in event_json
+
+
 def calculate_date_time_of_alert(event_entity):
     return event_entity.date - timedelta(seconds=event_entity.notifications)
 
@@ -47,15 +51,24 @@ class EventBL:
     @format_response
     @validate_request_json
     def update_one(self, event_json, event_id: int):
-        return self.eventModel.update_one(event_id, **event_json)
+        event = self.eventModel.update_one(event_id, **event_json)
+
+        self.post_event_update(event, event_json)
+        return event
+
+    def post_event_update(self, event, event_json):
+        if event_update_date_or_notifications(event_json):
+            self.schedulerBL.delete_many(event.element_id)
+            self.post_event_creation(event)
 
     def delete_event_bl(self, event_id: int):
         self.eventModel.delete_one(event_id)
 
     def post_event_creation(self, event_entity):
-        alert_date = calculate_date_time_of_alert(event_entity)
+        if event_entity.notifications is not None:
+            alert_date = calculate_date_time_of_alert(event_entity)
+            self.schedulerBL.create_one(event_entity.element_id, alert_date)
         self.schedulerBL.create_one(event_entity.element_id, event_entity.date)
-        self.schedulerBL.create_one(event_entity.element_id, alert_date)
 
     def post_populate_event_dto(self, event_dto, user):
         if event_contains_primary_values(event_dto):

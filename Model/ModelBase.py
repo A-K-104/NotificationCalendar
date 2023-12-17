@@ -44,7 +44,7 @@ class ModelBase(Generic[T]):
 
     @with_db_session
     @to_dto
-    def update_one(self, session, object_id: int, **kwargs) -> Union[dict, None]:
+    def update_one(self, session, object_id: int, **kwargs):
         update_one = session.query(self.generic_type).get(object_id)
         if update_one is None:
             raise NotFoundException()
