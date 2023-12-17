@@ -1,6 +1,6 @@
 from flask import make_response, request, Blueprint
 
-from BL.event_bl import EventBL
+from BL.EventBL import EventBL
 from Common.DTOs.UserDTO import UserDTO
 from Common.Exceptions.ContentException import ContentException
 from Common.Exceptions.NotFoundException import NotFoundException

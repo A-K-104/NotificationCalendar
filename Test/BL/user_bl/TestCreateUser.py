@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from BL.user_bl import UserBL
+from BL.UserBL import UserBL
 from Common.Exceptions.NotInEnumException import NotInEnumException
 from Test.BL.Test_base.TestCreateOneBase import TestCreateOneBase
 
@@ -14,7 +14,7 @@ class TestCreateUser(TestCreateOneBase):
         self.element_bl = UserBL()
         self.valid_json = {'username': 'c0ff33', 'role': 'ADMIN'}
         self.wrong_role = {'username': 'grot', 'role': 'GROOT'}
-        self.model_name = 'user_model.UserModel'
+        self.model_name = 'UserModel.UserModel'
 
     def test_create_one_should_enum_exception(self):
         # Arrange

@@ -1,6 +1,6 @@
 import unittest
 
-from BL.venue_bl import VenueBL
+from BL.VenueBL import VenueBL
 from Test.BL.Test_base.TestCreateOneBase import TestCreateOneBase
 
 
@@ -11,7 +11,7 @@ class TestCreateVenue(TestCreateOneBase):
         super().setUp()
         self.element_bl = VenueBL()
         self.valid_json = {'room_name': '404 TLV'}
-        self.model_name = 'venue_model.VenueModel'
+        self.model_name = 'VenueModel.VenueModel'
 
 
 if __name__ == '__main__':

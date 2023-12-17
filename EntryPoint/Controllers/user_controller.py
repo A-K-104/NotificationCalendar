@@ -1,6 +1,6 @@
 from flask import make_response, request, Blueprint
 
-from BL.user_bl import UserBL
+from BL.UserBL import UserBL
 from Common.Exceptions.ContentException import ContentException
 from Common.Exceptions.NameAlreadyUsedException import NameAlreadyUsedException
 from Common.Exceptions.NotFoundException import NotFoundException
