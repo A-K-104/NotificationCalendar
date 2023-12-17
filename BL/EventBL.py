@@ -2,7 +2,7 @@ from Common.DTOs.UserDTO import UserDTO
 from Common.Exceptions.NotFoundException import NotFoundException
 from Common.decorators.format_response_decorator import format_response_decorator
 from Common.decorators.validate_request_json_decorator import validate_request_json_decorator
-from Model.event_model import EventModel
+from Model.EventModel import EventModel
 
 
 # todo: implement

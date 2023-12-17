@@ -1,7 +1,7 @@
 from Common.Exceptions.NotFoundException import NotFoundException
 from Common.decorators.format_response_decorator import format_response_decorator
 from Common.decorators.validate_request_json_decorator import validate_request_json_decorator
-from Model.venue_model import VenueModel
+from Model.VenueModel import VenueModel
 
 
 class VenueBL:

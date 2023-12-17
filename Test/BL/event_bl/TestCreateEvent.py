@@ -3,7 +3,7 @@ import unittest
 
 from flask import Flask
 
-from BL.event_bl import EventBL
+from BL.EventBL import EventBL
 from Common.DTOs.UserDTO import UserDTO
 from Test.BL.Test_base.TestCreateOneBase import TestCreateOneBase
 
@@ -15,7 +15,7 @@ class TestCreateEvent(TestCreateOneBase):
         self.app = Flask(__name__)
         self.element_bl = EventBL()
         self.valid_json = {'title': 'The 404 party', 'date': '20 Feb 1991 00:00:00 GMT'}
-        self.model_name = 'event_model.EventModel'
+        self.model_name = 'EventModel.EventModel'
         user: UserDTO = UserDTO(1, "WebWizard", "ADMIN", datetime.datetime.now())
         self.additional_data = [user]
 

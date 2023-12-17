@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from BL.user_bl import UserBL
+from BL.UserBL import UserBL
 from Common.Exceptions.NotInEnumException import NotInEnumException
 from Test.BL.Test_base.TestUpdateOneBase import TestUpdateOneBase
 
@@ -15,7 +15,7 @@ class TestUpdateUser(TestUpdateOneBase):
         self.update_id = 1
         self.valid_json = {'username': 'c0ff33', 'role': 'ADMIN'}
         self.wrong_role = {'username': 'grot', 'role': 'GROOT'}
-        self.model_name = 'user_model.UserModel'
+        self.model_name = 'UserModel.UserModel'
 
     def test_update_one_should_enum_exception(self):
         # Arrange

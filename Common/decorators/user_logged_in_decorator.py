@@ -2,7 +2,7 @@ from functools import wraps
 
 from flask import abort, request
 
-from BL.user_bl import UserBL
+from BL.UserBL import UserBL
 from Common.DTOs.UserDTO import UserDTO
 from Common.Enums.UserRollEnum import UserRollEnum
 from Common.Exceptions.NotAuthorizedException import NotAuthorizedException

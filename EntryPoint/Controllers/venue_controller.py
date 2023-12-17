@@ -1,6 +1,6 @@
 from flask import make_response, request, Blueprint
 
-from BL.venue_bl import VenueBL
+from BL.VenueBL import VenueBL
 from Common.Exceptions.ContentException import ContentException
 from Common.Exceptions.NameAlreadyUsedException import NameAlreadyUsedException
 from Common.Exceptions.NotFoundException import NotFoundException

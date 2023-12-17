@@ -4,7 +4,7 @@ from Common.Exceptions.NotFoundException import NotFoundException
 from Common.Exceptions.NotInEnumException import NotInEnumException
 from Common.decorators.format_response_decorator import format_response_decorator
 from Common.decorators.validate_request_json_decorator import validate_request_json_decorator
-from Model.user_model import UserModel
+from Model.UserModel import UserModel
 
 
 class UserBL:
