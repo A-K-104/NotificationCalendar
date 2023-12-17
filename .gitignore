@@ -1,2 +1,3 @@
-/Common/Utiles/secrets.py
+secrets.py
 /.idea
+/EntryPoint/Config/secret.py
