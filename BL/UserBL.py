@@ -7,6 +7,15 @@ from Common.decorators.validate_request_json_decorator import validate_request_j
 from Model.UserModel import UserModel
 
 
+def validate_role(user_json):
+    if 'role' in user_json and not UserRollEnum.__contains__(user_json.get('role')):
+        raise NotInEnumException()
+
+
+def event_contains_primary_values(user_json):
+    return 'username' not in user_json or 'role' not in user_json
+
+
 class UserBL:
 
     def __init__(self):
@@ -21,23 +30,21 @@ class UserBL:
 
     @format_response
     @validate_request_json
-    def create_one(self, json):
-        if 'username' not in json or 'role' not in json:
+    def create_one(self, user_json):
+        if event_contains_primary_values(user_json):
             raise NotFoundException()
 
-        if not UserRollEnum.__contains__(json.get('role')):
-            raise NotInEnumException()
+        validate_role(user_json)
 
-        return self.userModel.create_one(**json)
+        return self.userModel.create_one(**user_json)
 
     @format_response
     @validate_request_json
-    def update_one(self, json, user_id: int):
+    def update_one(self, user_json, user_id: int):
 
-        if json.__contains__('role') and not UserRollEnum.__contains__(json.get('role')):
-            raise NotInEnumException()
+        validate_role(user_json)
 
-        return self.userModel.update_one(user_id, **json)
+        return self.userModel.update_one(user_id, **user_json)
 
     def delete_one(self, user_id: int):
         self.userModel.delete_one(user_id)

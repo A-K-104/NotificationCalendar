@@ -4,6 +4,10 @@ from Common.decorators.validate_request_json_decorator import validate_request_j
 from Model.VenueModel import VenueModel
 
 
+def venue_contains_primary_values(venue_json) -> bool:
+    return 'room_name' not in venue_json
+
+
 class VenueBL:
 
     def __init__(self):
@@ -15,16 +19,16 @@ class VenueBL:
 
     @format_response
     @validate_request_json
-    def create_one(self, json):
-        if 'room_name' not in json:
+    def create_one(self, venue_json):
+        if venue_contains_primary_values(venue_json):
             raise NotFoundException()
 
-        return self.venueModel.create_one(**json)
+        return self.venueModel.create_one(**venue_json)
 
     @format_response
     @validate_request_json
-    def update_one(self, json, venue_id: int):
-        return self.venueModel.update_one(venue_id, **json)
+    def update_one(self, venue_json, venue_id: int):
+        return self.venueModel.update_one(venue_id, **venue_json)
 
     def delete_one(self, venue_id: int):
         self.venueModel.delete_one(venue_id)

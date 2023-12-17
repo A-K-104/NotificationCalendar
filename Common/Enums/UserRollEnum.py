@@ -14,3 +14,4 @@ class UserRollEnum(Enum):
     @classmethod
     def __contains__(cls, item):
         return any(item == member.name for member in cls)
+
