@@ -11,7 +11,6 @@ app = Blueprint('event_controller', __name__, url_prefix=f'/api/v{api_version}/e
 
 event_bl = EventBL()
 
-
 @app.route('/<int:event_id>', methods=['GET'])
 def get_event(event_id: int):
     try:
