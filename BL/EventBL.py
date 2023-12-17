@@ -1,8 +1,13 @@
+from datetime import timedelta
+
+from BL.SchedulerBL import SchedulerBL
 from Common.DTOs.UserDTO import UserDTO
 from Common.Exceptions.NotFoundException import NotFoundException
 from Common.decorators.format_response_decorator import format_response_decorator
 from Common.decorators.validate_request_json_decorator import validate_request_json_decorator
 from Model.EventModel import EventModel
+
+schedulerBL = SchedulerBL()
 
 
 # todo: implement
@@ -25,7 +30,15 @@ class EventBL:
         if 'date' not in json or 'title' not in json:
             raise NotFoundException()
         json['organizer'] = user.el_id
-        return self.eventModel.create_one(**json)
+        event = self.eventModel.create_one(**json)
+
+        schedulerBL.create_one(event.date, event.el_id)
+
+        if event.notifications is not None and event.notifications > 0:
+            alert_date = event.date - timedelta(seconds=event.notifications)
+
+            schedulerBL.create_one(alert_date, event.id)
+        return event
 
     @format_response_decorator
     @validate_request_json_decorator

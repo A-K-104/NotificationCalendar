@@ -14,7 +14,7 @@ class ModelBase(Generic[T]):
 
     @with_db_session_decorator
     @to_dto_decorator
-    def get_one(self, session, object_id: int) -> Union[dict, None]:
+    def get_one(self, session, object_id: int):
         get_one = session.query(self.generic_type).get(object_id)
         if get_one is not None:
             return get_one
@@ -30,7 +30,7 @@ class ModelBase(Generic[T]):
 
     @with_db_session_decorator
     @to_dto_decorator
-    def create_one(self, session, **kwargs) -> dict:
+    def create_one(self, session, **kwargs):
         try:
             create_one = self.generic_type(**kwargs)
             session.add(create_one)

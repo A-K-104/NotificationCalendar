@@ -11,7 +11,7 @@ class EventDTO:
                  location: str,
                  venue: int,
                  link: str,
-                 notifications: str,
+                 notifications: int,
                  description: str,
                  created_on: datetime,
                  ):

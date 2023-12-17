@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, BIGINT
 
 from Common.Utiles.config import Base as sqlAlchemyEntityBase
 
@@ -15,9 +15,10 @@ class Event(sqlAlchemyEntityBase):
     location = Column(String(255))
     venue = Column(Integer, ForeignKey('venue.id'))
     link = Column(String(255))
-    notifications = Column(String(100))
+    notifications = Column(BIGINT)
     description = Column(String(255))
     created_on = Column(DateTime(), default=datetime.now)
+    scheduler_mapping_id = Column(Integer, ForeignKey("scheduler_mapping.id"))
 
     def to_dto(self):
         from Common.Extensions.dto_extensions import event_to_dto
