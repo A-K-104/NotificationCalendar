@@ -44,6 +44,14 @@ class EventBL:
 
         return event_entity
 
+    @format_response
+    @validate_request_json
+    def update_one(self, event_json, event_id: int):
+        return self.eventModel.update_one(event_id, **event_json)
+
+    def delete_event_bl(self, event_id: int):
+        self.eventModel.delete_one(event_id)
+
     def post_event_creation(self, event_entity):
         alert_date = calculate_date_time_of_alert(event_entity)
         self.schedulerBL.create_one(event_entity.element_id, event_entity.date)
@@ -63,11 +71,3 @@ class EventBL:
     @staticmethod
     def declare_organizer_field(event_json, user):
         event_json['organizer'] = user.element_id  # set default user
-
-    @format_response
-    @validate_request_json
-    def update_one(self, event_json, event_id: int):
-        return self.eventModel.update_one(event_id, **event_json)
-
-    def delete_event_bl(self, event_id: int):
-        self.eventModel.delete_one(event_id)
