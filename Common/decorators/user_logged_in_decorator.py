@@ -9,7 +9,7 @@ from Common.Exceptions.NotAuthorizedException import NotAuthorizedException
 from Common.Exceptions.NotFoundException import NotFoundException
 
 
-def user_is_admin_decorator(func):
+def user_is_admin(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         auth = request.authorization

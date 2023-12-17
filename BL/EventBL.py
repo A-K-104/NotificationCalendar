@@ -4,8 +4,8 @@ from BL.SchedulerBL import SchedulerBL
 from Common.DTOs.UserDTO import UserDTO
 from Common.Exceptions.NotFoundException import NotFoundException
 from Common.Utiles.Utiles import to_seconds
-from Common.decorators.format_response_decorator import format_response_decorator
-from Common.decorators.validate_request_json_decorator import validate_request_json_decorator
+from Common.decorators.format_response_decorator import format_response
+from Common.decorators.validate_request_json_decorator import validate_request_json
 from Model.EventModel import EventModel
 
 
@@ -27,16 +27,16 @@ class EventBL:
         self.schedulerBL = SchedulerBL()
         # todo: DI
 
-    @format_response_decorator
+    @format_response
     def get_one(self, event_id: int):
         return self.eventModel.get_one(event_id)
 
-    @format_response_decorator
+    @format_response
     def get_all(self):
         return self.eventModel.get_all()
 
-    @format_response_decorator
-    @validate_request_json_decorator
+    @format_response
+    @validate_request_json
     def create_one(self, event_dto, user: UserDTO):
         self.post_populate_event_dto(event_dto, user)
         event_entity = self.eventModel.create_one(**event_dto)
@@ -64,8 +64,8 @@ class EventBL:
     def declare_organizer_field(event_json, user):
         event_json['organizer'] = user.element_id  # set default user
 
-    @format_response_decorator
-    @validate_request_json_decorator
+    @format_response
+    @validate_request_json
     def update_one(self, event_json, event_id: int):
         return self.eventModel.update_one(event_id, **event_json)
 

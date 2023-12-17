@@ -4,10 +4,10 @@ from BL.EventBL import EventBL
 from Common.DTOs.UserDTO import UserDTO
 from Common.Exceptions.ContentException import ContentException
 from Common.Exceptions.NotFoundException import NotFoundException
-from Common.decorators.user_logged_in_decorator import user_is_admin_decorator
+from Common.decorators.user_logged_in_decorator import user_is_admin
 
 api_version = 1
-app = Blueprint('event_controller', __name__, url_prefix=f'/api/v{api_version}/event')  # todo validate use of __name__
+app = Blueprint('event_controller', __name__, url_prefix=f'/api/v{api_version}/event')
 
 event_bl = EventBL()
 
@@ -31,7 +31,7 @@ def get_all_events():
 
 
 @app.route('/', methods=['POST'])
-@user_is_admin_decorator
+@user_is_admin
 def create_event(user: UserDTO):
     try:
         return event_bl.create_one(request, user)
@@ -41,7 +41,7 @@ def create_event(user: UserDTO):
 
 
 @app.route('/<int:event_id>', methods=['PUT'])
-@user_is_admin_decorator
+@user_is_admin
 def update_event(_: dict, event_id: int):
     try:
         return event_bl.update_one(request, event_id)
@@ -51,7 +51,7 @@ def update_event(_: dict, event_id: int):
 
 
 @app.route('/<int:event_id>', methods=['DELETE'])
-@user_is_admin_decorator
+@user_is_admin
 def delete_event(_: dict, event_id: int):
     try:
         event_bl.delete_event_bl(event_id)

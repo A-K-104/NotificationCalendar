@@ -3,7 +3,7 @@ from functools import wraps
 from flask import jsonify
 
 
-def format_response_decorator(func):
+def format_response(func):
     @wraps(func)
     def wrapper(self, *args, **kwargs):
         response = func(self, *args, **kwargs)

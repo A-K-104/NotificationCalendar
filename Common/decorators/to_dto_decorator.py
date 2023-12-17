@@ -1,7 +1,7 @@
 from functools import wraps
 
 
-def to_dto_decorator(func):
+def to_dto(func):
     @wraps(func)
     def wrapper(self, *args, **kwargs):
         element = func(self, *args, **kwargs)

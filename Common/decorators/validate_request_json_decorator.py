@@ -3,7 +3,7 @@ from functools import wraps
 from Common.Exceptions.ContentException import ContentException
 
 
-def validate_request_json_decorator(func):
+def validate_request_json(func):
     @wraps(func)
     def wrapper(self, request, *args, **kwargs):
         if not request.is_json:

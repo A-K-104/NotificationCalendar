@@ -3,7 +3,7 @@ from functools import wraps
 from EntryPoint.Config import db_connection
 
 
-def with_db_session_decorator(func):
+def with_db_session(func):
     @wraps(func)
     def wrapper(self, *args, **kwargs):
         session = db_connection.get_db_session()
