@@ -3,7 +3,7 @@ from datetime import datetime
 
 class EventDTO:
     def __init__(self,
-                 el_id: int,
+                 element_id: int,
                  title: str,
                  date: datetime,
                  organizer: int,
@@ -15,7 +15,7 @@ class EventDTO:
                  description: str,
                  created_on: datetime,
                  ):
-        self.el_id = el_id
+        self.element_id = element_id
         self.title = title
         self.date = date
         self.organizer = organizer
@@ -29,7 +29,7 @@ class EventDTO:
 
     def to_dict(self):
         return {
-            "el_id": self.el_id,
+            "element_id": self.element_id,
             "title": self.title,
             "date": self.date,
             "organizer": self.organizer,

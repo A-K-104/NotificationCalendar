@@ -14,17 +14,17 @@ class SchedulerBL:
         self.scheduler_mapping_model = SchedulerMappingModel()
         self.event_model = EventModel()
 
-    def create_one(self, run_date, event_id: str):
+    def create_one(self, event_id: str, run_date):
         job_id = generate_uuid()
         scheduler_mapping = self.scheduler_mapping_model.create_one(cron_date=run_date, event=event_id,
                                                                     cron_id=str(job_id))
 
-        self.scheduler.add_job(SchedulerBL.execute, args=[self, scheduler_mapping.el_id], run_date=run_date,
+        self.scheduler.add_job(SchedulerBL.execute, args=[self, scheduler_mapping.element_id], run_date=run_date,
                                id=str(job_id))
 
     def delete_one(self, event):
 
-        scheduler_mapping: list = self.scheduler_mapping_model.get_by_event_id(event.el_id)
+        scheduler_mapping: list = self.scheduler_mapping_model.get_by_event_id(event.element_id)
 
         for mapping in scheduler_mapping:
             job = self.scheduler.get_job(mapping.cron_id)
