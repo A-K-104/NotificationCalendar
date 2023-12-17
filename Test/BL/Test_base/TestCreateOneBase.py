@@ -4,6 +4,7 @@ from unittest.mock import Mock, patch
 from flask import Flask
 
 from Common.Exceptions.ContentException import ContentException
+from Common.Exceptions.MissingArgumentsException import MissingArgumentsException
 from Common.Exceptions.NotFoundException import NotFoundException
 
 
@@ -40,7 +41,7 @@ class TestCreateOneBase(unittest.TestCase):
         request.json = {}  # Empty json to trigger NotFoundException
 
         # Act & Assert
-        with self.assertRaises(NotFoundException):
+        with self.assertRaises(MissingArgumentsException):
             self.element_bl.create_one(request, *self.additional_data)
 
     def test_create_one_should_Content_exception(self):

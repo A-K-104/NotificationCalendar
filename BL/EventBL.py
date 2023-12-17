@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from BL.SchedulerBL import SchedulerBL
 from Common.DTOs.UserDTO import UserDTO
-from Common.Exceptions.NotFoundException import NotFoundException
+from Common.Exceptions.MissingArgumentsException import MissingArgumentsException
 from Common.Utiles.Utiles import to_seconds
 from Common.decorators.format_response_decorator import format_response
 from Common.decorators.validate_request_json_decorator import validate_request_json
@@ -72,7 +72,7 @@ class EventBL:
 
     def post_populate_event_dto(self, event_dto, user):
         if event_contains_primary_values(event_dto):
-            raise NotFoundException()  # todo argument exception
+            raise MissingArgumentsException()
         self.declare_organizer_field(event_dto, user)
         if event_contains_notification(event_dto):
             self.add_default_notification(event_dto)

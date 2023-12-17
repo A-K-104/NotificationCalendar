@@ -1,5 +1,6 @@
 from Common.DTOs.UserDTO import UserDTO
 from Common.Enums.UserRollEnum import UserRollEnum
+from Common.Exceptions.MissingArgumentsException import MissingArgumentsException
 from Common.Exceptions.NotFoundException import NotFoundException
 from Common.Exceptions.NotInEnumException import NotInEnumException
 from Common.decorators.format_response_decorator import format_response
@@ -32,7 +33,7 @@ class UserBL:
     @validate_request_json
     def create_one(self, user_json):
         if event_contains_primary_values(user_json):
-            raise NotFoundException()
+            raise MissingArgumentsException()
 
         validate_role(user_json)
 

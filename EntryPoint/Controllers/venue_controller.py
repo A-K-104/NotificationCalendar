@@ -2,6 +2,7 @@ from flask import make_response, request, Blueprint
 
 from BL.VenueBL import VenueBL
 from Common.Exceptions.ContentException import ContentException
+from Common.Exceptions.MissingArgumentsException import MissingArgumentsException
 from Common.Exceptions.NameAlreadyUsedException import NameAlreadyUsedException
 from Common.Exceptions.NotFoundException import NotFoundException
 
@@ -26,7 +27,7 @@ def create_venue():
     try:
         return venue_bl.create_one(request)
 
-    except (NameAlreadyUsedException, NotFoundException, ContentException) as e:
+    except (NameAlreadyUsedException, MissingArgumentsException, ContentException) as e:
         return make_response(e.message, e.error_code)
 
 

@@ -2,6 +2,7 @@ from flask import make_response, request, Blueprint
 
 from BL.UserBL import UserBL
 from Common.Exceptions.ContentException import ContentException
+from Common.Exceptions.MissingArgumentsException import MissingArgumentsException
 from Common.Exceptions.NameAlreadyUsedException import NameAlreadyUsedException
 from Common.Exceptions.NotFoundException import NotFoundException
 from Common.Exceptions.NotInEnumException import NotInEnumException
@@ -27,7 +28,7 @@ def create_user():
     try:
         return user_bl.create_one(request)
 
-    except (NameAlreadyUsedException, NotInEnumException, NotFoundException, ContentException) as e:
+    except (NameAlreadyUsedException, NotInEnumException, ContentException, MissingArgumentsException) as e:
         return make_response(e.message, e.error_code)
 
 

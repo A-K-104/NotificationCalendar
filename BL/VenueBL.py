@@ -1,3 +1,4 @@
+from Common.Exceptions.MissingArgumentsException import MissingArgumentsException
 from Common.Exceptions.NotFoundException import NotFoundException
 from Common.decorators.format_response_decorator import format_response
 from Common.decorators.validate_request_json_decorator import validate_request_json
@@ -21,7 +22,7 @@ class VenueBL:
     @validate_request_json
     def create_one(self, venue_json):
         if venue_contains_primary_values(venue_json):
-            raise NotFoundException()
+            raise MissingArgumentsException()
 
         return self.venueModel.create_one(**venue_json)
 

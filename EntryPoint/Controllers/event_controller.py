@@ -3,6 +3,7 @@ from flask import make_response, request, Blueprint
 from BL.EventBL import EventBL
 from Common.DTOs.UserDTO import UserDTO
 from Common.Exceptions.ContentException import ContentException
+from Common.Exceptions.MissingArgumentsException import MissingArgumentsException
 from Common.Exceptions.NotFoundException import NotFoundException
 from Common.decorators.user_logged_in_decorator import user_is_admin
 
@@ -35,7 +36,7 @@ def create_event(user: UserDTO):
     try:
         return event_bl.create_one(request, user)
 
-    except (NotFoundException, ContentException) as e:
+    except (NotFoundException, MissingArgumentsException) as e:
         return make_response(e.message, e.error_code)
 
 
