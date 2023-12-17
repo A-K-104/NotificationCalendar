@@ -56,13 +56,14 @@ class EventBL:
         self.post_event_update(event, event_json)
         return event
 
+    def delete_event_bl(self, event_id: int):
+        self.schedulerBL.delete_many(str(event_id))
+        self.eventModel.delete_one(event_id)
+
     def post_event_update(self, event, event_json):
         if event_update_date_or_notifications(event_json):
             self.schedulerBL.delete_many(event.element_id)
             self.post_event_creation(event)
-
-    def delete_event_bl(self, event_id: int):
-        self.eventModel.delete_one(event_id)
 
     def post_event_creation(self, event_entity):
         if event_entity.notifications is not None:
