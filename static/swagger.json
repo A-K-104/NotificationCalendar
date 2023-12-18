@@ -301,6 +301,134 @@
           }
         }
       }
+    },
+    "/venue/{venue_id}": {
+      "get": {
+        "summary": "Get a single venue",
+        "operationId": "getVenue",
+        "tags": [
+          "Venue"
+        ],
+        "parameters": [
+          {
+            "name": "venue_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the venue to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Venue retrieved successfully"
+          },
+          "404": {
+            "description": "Venue not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an existing venue",
+        "operationId": "updateVenue",
+        "tags": [
+          "Venue"
+        ],
+        "parameters": [
+          {
+            "name": "venue_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the Venue to update"
+          }
+        ],
+        "requestBody": {
+          "description": "Venue object that needs to be updated",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Venue"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Venue updated successfully"
+          },
+          "415": {
+            "description": "Invalid content type, expecting JSON"
+          },
+          "400": {
+            "description": "Name already exist: \"room_name\" already inuse with different room name"
+          },
+          "404": {
+            "description": "Venue not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an Venue",
+        "operationId": "deleteVenue",
+        "tags": [
+          "Venue"
+        ],
+        "parameters": [
+          {
+            "name": "venue_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the Venue to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Venue deleted successfully"
+          },
+          "404": {
+            "description": "Venue not found"
+          }
+        }
+      }
+    },
+    "/venue/": {
+      "post": {
+        "summary": "Create a new Venue",
+        "operationId": "createVenue",
+        "tags": [
+          "Venue"
+        ],
+        "requestBody": {
+          "description": "Venue object that needs to be created",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Venue"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Venue updated successfully"
+          },
+          "415": {
+            "description": "Invalid content type, expecting JSON"
+          },
+          "400": {
+            "description": "missing arguments: \"room_name\" | Name already exist: \"room_name\" already in use"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -374,6 +502,22 @@
               "USER"
             ],
             "description": "The role of the user"
+          }
+        }
+      },
+      "Venue": {
+        "type": "object",
+        "required": [
+          "room_name",
+          "notes"
+        ],
+        "properties": {
+          "room_name": {
+            "required": true,
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
           }
         }
       }
