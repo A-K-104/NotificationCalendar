@@ -31,6 +31,14 @@ class ModelBase(Generic[T]):
 
     @with_db_session
     @to_dto
+    def get_all_sort_by(self, session, order_by):
+        get_all = session.query(self.generic_type).order_by(order_by).all()
+        if get_all is not None:
+            return get_all
+        raise NotFoundException()
+
+    @with_db_session
+    @to_dto
     def create_one(self, session, **kwargs):
         try:
             create_one = self.generic_type(**kwargs)

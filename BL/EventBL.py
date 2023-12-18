@@ -56,6 +56,18 @@ class EventBL:
         self.post_event_update(event, event_json)
         return event
 
+    @format_response
+    def all_by_date(self):
+        return self.eventModel.get_all_sort_by_date()
+
+    @format_response
+    def all_by_guests(self):
+        return self.eventModel.get_all_sort_by_guests()
+
+    @format_response
+    def all_by_creat_on(self):
+        return self.eventModel.get_all_sort_by_creat_on()
+
     def delete_event_bl(self, event_id: int):
         self.schedulerBL.delete_many(str(event_id))
         self.eventModel.delete_one(event_id)

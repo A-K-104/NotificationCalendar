@@ -11,7 +11,7 @@ class Event(sqlAlchemyEntityBase):
     title = Column(String(255), nullable=False)
     date = Column(DateTime(), nullable=False)
     organizer = Column(Integer, ForeignKey('user.id'))
-    guests = Column(String(100))
+    guests = Column(Integer)
     location = Column(String(255))
     venue = Column(Integer, ForeignKey('venue.id'))
     link = Column(String(255))

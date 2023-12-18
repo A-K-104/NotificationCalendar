@@ -7,7 +7,7 @@ class EventDTO:
                  title: str,
                  date: datetime,
                  organizer: int,
-                 guests: str,
+                 guests: int,
                  location: str,
                  venue: int,
                  link: str,
