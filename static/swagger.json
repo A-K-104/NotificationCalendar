@@ -437,24 +437,14 @@
         "type": "object",
         "required": [
           "title",
-          "date",
-          "description",
-          "element_id",
-          "guests",
-          "link",
-          "location",
-          "notifications",
-          "organizer",
-          "venue"
+          "date"
         ],
         "properties": {
           "title": {
-            "required": true,
             "type": "string"
           },
           "date": {
             "type": "string",
-            "required": true,
             "description": "This will be the event datetime",
             "format": "date-time"
           },
@@ -491,12 +481,10 @@
         ],
         "properties": {
           "username": {
-            "required": true,
             "type": "string"
           },
           "role": {
             "type": "string",
-            "required": true,
             "enum": [
               "ADMIN",
               "USER"
@@ -508,12 +496,10 @@
       "Venue": {
         "type": "object",
         "required": [
-          "room_name",
-          "notes"
+          "room_name"
         ],
         "properties": {
           "room_name": {
-            "required": true,
             "type": "string"
           },
           "notes": {
