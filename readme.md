@@ -2,6 +2,7 @@
 
 <!-- TOC -->
 * [RAlfaBet Backend Exercise](#ralfabet-backend-exercise)
+  * [The API documentation](#the-api-documentation)
   * [Entities](#entities)
     * [Event](#event)
     * [User](#user)
@@ -23,6 +24,10 @@
     * [UT (for BLs)](#ut-for-bls)
     * [Integrations](#integrations)
 <!-- TOC -->
+
+
+## The API documentation
+To access the documentation run the app and go to [host/swagger](http://localhost:5000/swagger) for the full api documentation
 
 ## Entities
 
