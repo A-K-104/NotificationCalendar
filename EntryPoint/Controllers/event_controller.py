@@ -36,7 +36,7 @@ def create_event(user: UserDTO):
     try:
         return event_bl.create_one(request, user)
 
-    except (NotFoundException, MissingArgumentsException) as e:
+    except MissingArgumentsException as e:
         return make_response(e.message, e.error_code)
 
 

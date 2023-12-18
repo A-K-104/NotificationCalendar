@@ -1,0 +1,239 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "RAI bet backend test",
+    "version": "1.0.0",
+    "title": "notification_service"
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "paths": {
+    "/event/all": {
+      "get": {
+        "summary": "Get all events",
+        "operationId": "getAllEvents",
+        "tags": [
+          "Event"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of events"
+          },
+          "404": {
+            "description": "No events found"
+          }
+        }
+      }
+    },
+    "/event/{event_id}": {
+      "get": {
+        "summary": "Get a single event",
+        "operationId": "getEvent",
+        "tags": [
+          "Event"
+        ],
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the event to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event retrieved successfully"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an existing event",
+        "operationId": "updateEvent",
+        "tags": [
+          "Event"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the event to update"
+          }
+        ],
+        "requestBody": {
+          "description": "Event object that needs to be updated",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Event"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event updated successfully"
+          },
+          "415": {
+            "description": "Invalid content type, expecting JSON"
+          },
+          "401": {
+            "description": "Not authorized: user wasn't found or the user is not ADMIN role"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an event",
+        "operationId": "deleteEvent",
+        "tags": [
+          "Event"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the event to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event deleted successfully"
+          },
+          "401": {
+            "description": "Not authorized: user wasn't found or the user is not ADMIN role"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      }
+    },
+    "/event/": {
+      "post": {
+        "summary": "Create a new event",
+        "operationId": "createEvent",
+        "tags": [
+          "Event"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Event object that needs to be created",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Event"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event created successfully"
+          },
+          "400": {
+            "description": "missing arguments: title or  date"
+          },
+          "401": {
+            "description": "Not authorized: user wasn't found or the user is not ADMIN role"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Event": {
+        "type": "object",
+        "required": [
+          "title",
+          "date",
+          "description",
+          "element_id",
+          "guests",
+          "link",
+          "location",
+          "notifications",
+          "organizer",
+          "venue"
+        ],
+        "properties": {
+          "title": {
+            "required": true,
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "required": true,
+            "description": "This will be the event datetime",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string"
+          },
+          "guests": {
+            "description": "This will determine the number of guests",
+            "type": "integer"
+          },
+          "link": {
+            "description": "This will the event link (e.g.,zoom meeting)",
+            "type": "string"
+          },
+          "location": {
+            "description": "This will physical address for the event",
+            "type": "string"
+          },
+          "notifications": {
+            "description": "This will be the amount of seconds that you want alert in advance (default without any value received it will be 30 minutes)",
+            "type": "integer"
+          },
+          "venue": {
+            "description": "This will be the id of the venue from the venues",
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "For the simplicity there is no need for password only need to username."
+      }
+    }
+  }
+}
