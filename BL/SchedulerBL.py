@@ -1,7 +1,8 @@
 from uuid import uuid1 as generate_uuid
 
+from apscheduler.schedulers.background import BackgroundScheduler
+
 from BL.NotifierBL import NotifierBL
-from Common.Utiles.config import scheduler
 from Common.decorators.cron_date_passed import cron_date_passed
 from Model.EventModel import EventModel
 from Model.SchedulerMappingModel import SchedulerMappingModel
@@ -10,10 +11,12 @@ from Model.SchedulerMappingModel import SchedulerMappingModel
 class SchedulerBL:
 
     def __init__(self):
-        self.scheduler = scheduler
+        self.scheduler = BackgroundScheduler()
+        self.scheduler.start()
         self.scheduler_mapping_model = SchedulerMappingModel()
         self.event_model = EventModel()
 
+    def register_jobs_from_scheduler_db(self):
         scheduler_mappings = self.scheduler_mapping_model.get_all()
         self.set_many(scheduler_mappings)
 
