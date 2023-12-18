@@ -173,6 +173,134 @@
           }
         }
       }
+    },
+    "/user/{user_id}": {
+      "get": {
+        "summary": "Get a single user",
+        "operationId": "getUser",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the user to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User retrieved successfully"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an existing user",
+        "operationId": "updateUser",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the user to update"
+          }
+        ],
+        "requestBody": {
+          "description": "User object that needs to be updated",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully"
+          },
+          "415": {
+            "description": "Invalid content type, expecting JSON"
+          },
+          "400": {
+            "description": "Enum wasn't found the role that was provided is not ADMIN/USER | Name already exist: username already in use"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an user",
+        "operationId": "deleteUser",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the user to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted successfully"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/user/": {
+      "post": {
+        "summary": "Create a new user",
+        "operationId": "createUser",
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "description": "User object that needs to be created",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully"
+          },
+          "415": {
+            "description": "Invalid content type, expecting JSON"
+          },
+          "400": {
+            "description": "missing arguments: username or role | Enum wasn't found the role that was provided is not ADMIN/USER | Name already exist: username already in use"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -224,6 +352,28 @@
           "venue": {
             "description": "This will be the id of the venue from the venues",
             "type": "integer"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "username",
+          "role"
+        ],
+        "properties": {
+          "username": {
+            "required": true,
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "ADMIN",
+              "USER"
+            ],
+            "description": "The role of the user"
           }
         }
       }
