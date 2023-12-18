@@ -1,33 +1,47 @@
 ﻿# RAlfaBet Backend Exercise
 
 <!-- TOC -->
+
 * [RAlfaBet Backend Exercise](#ralfabet-backend-exercise)
-  * [The API documentation](#the-api-documentation)
-  * [Entities](#entities)
-    * [Event](#event)
-    * [User](#user)
-    * [Venue](#venue)
-  * [EndPoints](#endpoints)
-    * [Controllers](#controllers)
-      * [Event](#event-1)
-      * [UserController](#usercontroller)
-      * [VenueController](#venuecontroller)
-      * [NotificationController (bonus)](#notificationcontroller-bonus)
-      * [WS (bonus)](#ws-bonus)
-    * [RateLimit (bonus)](#ratelimit-bonus)
-    * [Redis](#redis)
-    * [Database (Relational)](#database-relational)
-  * [BLs](#bls)
-    * [EventsBL](#eventsbl)
-    * [ReportServiceSubscriptionBL](#reportservicesubscriptionbl)
-  * [Test Plan](#test-plan)
-    * [UT (for BLs)](#ut-for-bls)
-    * [Integrations](#integrations)
+    * [The API documentation](#the-api-documentation)
+    * [Entities](#entities)
+        * [Event](#event)
+        * [User](#user)
+        * [Venue](#venue)
+    * [EndPoints](#endpoints)
+        * [Controllers](#controllers)
+            * [Event](#event-1)
+            * [UserController](#usercontroller)
+            * [VenueController](#venuecontroller)
+            * [NotificationController (bonus)](#notificationcontroller-bonus)
+            * [WS (bonus)](#ws-bonus)
+        * [RateLimit (bonus)](#ratelimit-bonus)
+        * [Redis](#redis)
+        * [Database (Relational)](#database-relational)
+    * [BLs](#bls)
+        * [EventsBL](#eventsbl)
+        * [ReportServiceSubscriptionBL](#reportservicesubscriptionbl)
+    * [Test Plan](#test-plan)
+        * [UT (for BLs)](#ut-for-bls)
+        * [Integrations](#integrations)
+
 <!-- TOC -->
 
+## Installation
+
+run postgres on doker (config is here: EntryPoint/Config/config_base.py)
+run pip install -r requirements
+
+create at postgres db named: NotificationDB and,
+another one to the integration test: NotificationDBTest
+added secret (username and password to here: EntryPoint\Config)
+
+run py app.py (run as "__main__")
 
 ## The API documentation
-To access the documentation run the app and go to [host/swagger](http://localhost:5000/swagger) for the full api documentation
+
+To access the documentation run the app and go to [host/swagger](http://localhost:5000/swagger) for the full api
+documentation
 
 ## Entities
 
@@ -106,7 +120,7 @@ Manage rate limit: allow x requests in y frequency time (e.g. 100 r in 1 m).
 ### Redis
 
 1. to allow more than one pod.
-2. To prevent incrementation  and setting to 0 at the same time (relational DB downside).
+2. To prevent incrementation and setting to 0 at the same time (relational DB downside).
 
 ![](rateLimitDiagram.png)
 
@@ -175,13 +189,13 @@ Manage rate limit: allow x requests in y frequency time (e.g. 100 r in 1 m).
     2. Test with events having the same number of guests.
 10. Retrieve sorted by create date.
 
-     1. Test sorting events by their creation date.
-     2. Test with multiple events created on the same date.
+    1. Test sorting events by their creation date.
+    2. Test with multiple events created on the same date.
 11. Batch CRUD operations (Bonus)
 
-     1. Test batch creation of multiple events.
-     2. Test batch update and deletion of events.
-     3. Test partial success/failure scenarios (e.g., some operations succeed while others fail).
+    1. Test batch creation of multiple events.
+    2. Test batch update and deletion of events.
+    3. Test partial success/failure scenarios (e.g., some operations succeed while others fail).
 
 ### Integrations
 
