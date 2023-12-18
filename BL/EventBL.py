@@ -9,6 +9,10 @@ from Common.decorators.validate_request_json_decorator import validate_request_j
 from Model.EventModel import EventModel
 
 
+def event_filter_contains_primary_value(request) -> bool:
+    return 'location' not in request.args
+
+
 def event_contains_primary_values(event_json) -> bool:
     return 'date' not in event_json or 'title' not in event_json
 
@@ -65,8 +69,20 @@ class EventBL:
         return self.eventModel.get_all_sort_by_guests()
 
     @format_response
-    def all_by_creat_on(self):
-        return self.eventModel.get_all_sort_by_creat_on()
+    def all_by_created_on(self):
+        return self.eventModel.get_all_sort_by_created_on()
+
+    @format_response
+    def filter_by_venue(self, venue_id):
+        return self.eventModel.filter_by_venue(venue_id)
+
+    @format_response
+    def filter_by_location(self, request):
+        if event_filter_contains_primary_value(request):
+            raise MissingArgumentsException()
+
+        location = request.args.get("location")
+        return self.eventModel.filter_by_location(location)
 
     def delete_event_bl(self, event_id: int):
         self.schedulerBL.delete_many(str(event_id))
