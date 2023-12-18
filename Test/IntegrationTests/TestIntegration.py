@@ -45,17 +45,28 @@ class TestIntegration(unittest.TestCase):
         # TODO: Implement database cleanup logic
         pass
 
-    def test_create_and_update_retrieve_event_successfully(self):
+    def test_create_and_update_retrieve_and_sort_event_successfully(self):
         # Test creating, updating, and retrieving an event with admin user
         user_name = self.admin_user['username']
 
-        element_id = self.get_create_event_id(user_name)
-        self.validate_event(element_id, self.valid_event)
+        first_element_id = self.get_create_event_id(user_name)
+        second_element_id = self.get_create_event_id(user_name)
 
-        self.update_event(user_name, element_id)
-        self.validate_event(element_id, self.valid_update_event)
+        self.update_event(user_name, second_element_id)
 
-        self.delete_event(user_name, element_id)
+        # creating 3 elements after updating to make sure that the dates are not ordered
+        third_element_id = self.get_create_event_id(user_name)
+
+        self.checking_if_sorted_different_from_reg()
+
+        self.delete_event(user_name, first_element_id)
+        self.delete_event(user_name, second_element_id)
+        self.delete_event(user_name, third_element_id)
+
+    def checking_if_sorted_different_from_reg(self):
+        un_sorted_events = self.perform_request('get', f"/api/v1/event/all")
+        sorted_events = self.perform_request('get', f"/api/v2/event/all/date")
+        self.assertNotEquals(un_sorted_events.json, sorted_events.json)
 
     def test_create_and_event_not_authorized(self):
         # Test creating an event with a non-admin user should be unauthorized
@@ -73,12 +84,12 @@ class TestIntegration(unittest.TestCase):
         user_name = self.non_admin_user['username']
         self.perform_request('delete', f"/api/v1/event/1", self.valid_event, user_name, 401)
 
-
     def delete_event(self, user_name, element_id):
         self.perform_request('delete', f"/api/v1/event/{element_id}", self.valid_update_event, user_name)
 
     def update_event(self, user_name, element_id):
         self.perform_request('put', f"/api/v1/event/{element_id}", self.valid_update_event, user_name)
+        self.validate_event(element_id, self.valid_update_event)
 
     def validate_event(self, element_id, valid_event):
         get_response = self.perform_request('get', f"/api/v1/event/{element_id}", self.valid_update_event)
@@ -90,6 +101,7 @@ class TestIntegration(unittest.TestCase):
         post_response = self.perform_request('post', f"/api/v1/event/", self.valid_event, user_name)
         element_id = post_response.json.get('element_id')
         self.assertIsNotNone(element_id, "Element ID not returned in response")
+        self.validate_event(element_id, self.valid_event)
         return element_id
 
     def perform_request(self, method, url, data=None, username=None, expected_status=200):
