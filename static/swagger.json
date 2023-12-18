@@ -7,11 +7,11 @@
   },
   "servers": [
     {
-      "url": "/api/v1"
+      "url": "/api"
     }
   ],
   "paths": {
-    "/event/all": {
+    "/v1/event/all": {
       "get": {
         "summary": "Get all events",
         "operationId": "getAllEvents",
@@ -28,7 +28,7 @@
         }
       }
     },
-    "/event/{event_id}": {
+    "/v1/event/{event_id}": {
       "get": {
         "summary": "Get a single event",
         "operationId": "getEvent",
@@ -138,7 +138,7 @@
         }
       }
     },
-    "/event/": {
+    "/v1/event/": {
       "post": {
         "summary": "Create a new event",
         "operationId": "createEvent",
@@ -174,7 +174,7 @@
         }
       }
     },
-    "/user/{user_id}": {
+    "/v1/user/{user_id}": {
       "get": {
         "summary": "Get a single user",
         "operationId": "getUser",
@@ -271,7 +271,7 @@
         }
       }
     },
-    "/user/": {
+    "/v1/user/": {
       "post": {
         "summary": "Create a new user",
         "operationId": "createUser",
@@ -302,7 +302,7 @@
         }
       }
     },
-    "/venue/{venue_id}": {
+    "/v1/venue/{venue_id}": {
       "get": {
         "summary": "Get a single venue",
         "operationId": "getVenue",
@@ -399,7 +399,7 @@
         }
       }
     },
-    "/venue/": {
+    "/v1/venue/": {
       "post": {
         "summary": "Create a new Venue",
         "operationId": "createVenue",
@@ -426,6 +426,122 @@
           },
           "400": {
             "description": "missing arguments: \"room_name\" | Name already exist: \"room_name\" already in use"
+          }
+        }
+      }
+    },
+    "/v2/event/all/created_on": {
+      "get": {
+        "summary": "Get all events sorted by created date",
+        "operationId": "sortAllByCreateDate",
+        "tags": [
+          "Event"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of events"
+          },
+          "404": {
+            "description": "No events found"
+          }
+        }
+      }
+    },
+    "/v2/event/all/guests": {
+      "get": {
+        "summary": "Get all events sorted by guests number",
+        "operationId": "sortAllByCreateGuests",
+        "tags": [
+          "Event"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of events"
+          },
+          "404": {
+            "description": "No events found"
+          }
+        }
+      }
+    },
+    "/v2/event/all/date": {
+      "get": {
+        "summary": "Get all events sorted by event date",
+        "operationId": "sortAllByEventDate",
+        "tags": [
+          "Event"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of events"
+          },
+          "404": {
+            "description": "No events found"
+          }
+        }
+      }
+    },
+    "/v2/event/filter/venue/{venue_id}": {
+      "get": {
+        "summary": "Get all events filtered by venue id",
+        "operationId": "filterAllByVenueId",
+        "tags": [
+          "Event"
+        ],
+        "parameters": [
+          {
+            "name": "venue_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the venue to filter by"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of events"
+          },
+          "404": {
+            "description": "No events found"
+          },
+          "500": {
+            "description": "Not Valid: server error on look up"
+          }
+        }
+      }
+    },
+    "/v2/event/filter/location/": {
+      "get": {
+        "summary": "Get all events filtered by location",
+        "operationId": "filterAllByLocation",
+        "tags": [
+          "Event"
+        ],
+        "parameters": [
+          {
+            "name": "location",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The location to filter by"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of events"
+          },
+          "400": {
+            "description": "missing arguments: no location was found in uri parm"
+          },
+          "404": {
+            "description": "No events found"
+          },
+          "500": {
+            "description": "Not Valid: server error on look up"
           }
         }
       }

@@ -7,7 +7,7 @@ from Common.Utiles.config import Base as sqlAlchemyEntityBase
 
 
 class User(sqlAlchemyEntityBase):
-    __tablename__ = 'user'  # todo: add to config
+    __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     username = Column(String(255), nullable=False, unique=True)
     role = Column(String(100), nullable=False)
