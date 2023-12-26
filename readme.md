@@ -1,4 +1,4 @@
-﻿# RAlfaBet Backend Exercise
+﻿# Notification Calendar
 
 <!-- TOC -->
 
